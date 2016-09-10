@@ -4,12 +4,34 @@
 
     
   <url>
-    <loc>http://yunxuan.me/2016/09/08/%E6%96%B0%E5%85%B5%E8%AE%AD%E7%BB%83%E4%B9%8BFeed%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%EF%BC%88%E4%B8%80%EF%BC%89/</loc>
-    <lastmod>2016-09-09T11:02:22.000Z</lastmod>
+    <loc>http://yunxuan.me/2016/09/08/%E4%BB%8E%E4%B8%80%E6%AC%A1%E8%B8%A9%E5%9D%91%E8%AF%B4%E8%B5%B7/</loc>
+    <lastmod>2016-09-10T06:33:18.000Z</lastmod>
+    <data>
+        <display>
+        <title>从一次踩坑说起</title>
+        <pubTime>2016-09-08T05:54:04.000Z</pubTime>
+        
+        <tag>踩坑</tag>
+         
+        <tag>线上问题处理</tag>
+         
+         
+           
+             
+              <breadCrumb title="日常踩坑" url="http://yunxuan.me/categories/%E6%97%A5%E5%B8%B8%E8%B8%A9%E5%9D%91/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yunxuan.me/2016/09/09/%E6%96%B0%E5%85%B5%E8%AE%AD%E7%BB%83%E4%B9%8BFeed%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%EF%BC%88%E4%B8%80%EF%BC%89/</loc>
+    <lastmod>2016-09-10T05:52:39.000Z</lastmod>
     <data>
         <display>
         <title>新兵训练之Feed架构设计（一）</title>
-        <pubTime>2016-09-08T08:49:29.000Z</pubTime>
+        <pubTime>2016-09-09T08:49:29.000Z</pubTime>
         
         <tag>架构</tag>
          

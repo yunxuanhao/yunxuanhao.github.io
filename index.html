@@ -269,7 +269,7 @@
             
               
                 
-                <a class="post-title-link" href="/2016/09/08/新兵训练之Feed架构设计（一）/" itemprop="url">
+                <a class="post-title-link" href="/2016/09/09/新兵训练之Feed架构设计（一）/" itemprop="url">
                   新兵训练之Feed架构设计（一）
                 </a>
               
@@ -283,8 +283,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-09-08T16:49:29+08:00" content="2016-09-08">
-              2016-09-08
+            <time itemprop="dateCreated" datetime="2016-09-09T16:49:29+08:00" content="2016-09-09">
+              2016-09-09
             </time>
           </span>
 
@@ -342,6 +342,129 @@
 <p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
 <h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
 <p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/09/08/从一次踩坑说起/" itemprop="url">
+                  从一次踩坑说起
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-08T13:54:04+08:00" content="2016-09-08">
+              2016-09-08
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/日常踩坑/" itemprop="url" rel="index">
+                    <span itemprop="name">日常踩坑</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>粗略算起来，从毕业入职到现在也已经两个多月了，这两个月来，算是逐渐熟悉了在公司的生活。还是很庆幸同事还有老大都还挺随和的，每天跟他们扯扯淡，搬搬砖，也还不错。不过前一段时间踩到了一个坑，就在这记录一下，毕竟是工作后第一次踩这种坑，希望能总结一下。</p>
+<p>接到的是一个SEO的小需求，就要在某个页面，加上个友情链接，原有的友情链接的逻辑是保存在数据库里，然后mc里缓存一个小时。其中不同的页面有不同的type_id，根据type_id进行分类，其中比较特殊的是首页，type_id是0。因为是给一个新的页面加入友情链接，其实给这个页面分配一个type_id就好了。但是上线那天晚上就出现了一个很怪的情况，首页的友情链接里莫名其妙的混进了很多其他页面的友情链接，因为是第一次遇到这种线上的bug，其实是有点慌，赶紧看看是哪来的这些东西。查了一下发现是缓存里面的数据出错了，数据库里是正确的，就先清空了缓存，恢复了线上，开始走查代码是怎么回事。</p>
+<p>结果真的发现了一个巨坑，原来后台编辑或者添加友情链接的时候，并不是直接从库里读取，而是手动去更新缓存。虽然本身更新缓存的逻辑没问题，但是这仅限于当时没有主从库的时候。当时写主读从的时候，后台用户添加了一条新的友情链接，然后直接开始编辑，编辑的逻辑是读数据然后修改数据库，然后改写缓存，但是当刚刚添加立即编辑时，因为主从库延迟，从库里根本读不到，然后他没有设置合法性判断，直接取其中的type_id强制转换成int，所以悲剧的null转成了0，就写入了首页的缓存，😔都是泪啊，当然解决办法也很简单，加了合法性判断，编辑时没有读到数据时直接return false。</p>
+<p>事后想想，虽然这个线上bug跟我半毛钱关系都没有，不过还是要写了一个总结提交给老大，也是对于一次线上问题的完整总结吧，大概包括以下几点：</p>
+<ul>
+<li>故障时间和描述</li>
+<li>定位bug，查询出故障原因</li>
+<li>故障的解决方案</li>
+<li>改进方案和总结</li>
+</ul>
+<p>以后出了问题自己也要这样总结吧，一定把这些总结落实到文档中，记录下来，毕竟踩坑是为了以后能不再掉进去，总结经验才能不断进步嘛。</p>
 
           
         
@@ -513,7 +636,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-count">3</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -521,7 +644,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -530,7 +653,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
