@@ -342,19 +342,56 @@
         
           
             <p>这个系列主要是分享在新兵训练营学到的关于feed架构的设计，之间包括很多的内容，包括分库，分表，队列，缓存，主从等内容</p>
-<h3 id="什么是Feed架构"><a href="#什么是Feed架构" class="headerlink" title="什么是Feed架构"></a>什么是Feed架构</h3><p>既然是做feed架构的设计，那么第一件事就是解释什么是feed。简单来说，就是用户之间可以关注，用户可以发布信息，而关注他的人就可以看到他的动态。微博，twitter，facebook，微信朋友圈等都是典型的feed。</p>
+<h2 id="什么是Feed架构"><a href="#什么是Feed架构" class="headerlink" title="什么是Feed架构"></a>什么是Feed架构</h2><p>既然是做feed架构的设计，那么第一件事就是解释什么是feed。简单来说，就是用户之间可以关注，用户可以发布信息，而关注他的人就可以看到他的动态。微博，twitter，facebook，微信朋友圈等都是典型的feed。</p>
 <div align="center"><br><img src="https://odufsglth.qnssl.com/16-9-21/94780335.jpg" width="80%" height="80%" alt="微博截图"><br></div>
 
-<h3 id="Feed架构的两种模式"><a href="#Feed架构的两种模式" class="headerlink" title="Feed架构的两种模式"></a>Feed架构的两种模式</h3><p>这里先不考虑底层的数据库缓存队列如何用，先考虑整体的设计方案，Feed架构通常有两种模式，推模式和拉模式。</p>
-<h4 id="推模式"><a href="#推模式" class="headerlink" title="推模式"></a>推模式</h4><p>推模式顾名思义，即PUSH。可以理解为每一个用户都有两个信箱，一个发件箱，一个收件箱。当一个用户发布一条微博时，会将发布的微博放到他自己的发件箱，然后系统做处理，将这封微博复制多份，投递到所有的关注了他的用户的收件箱中。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+<h2 id="Feed架构的两种模式"><a href="#Feed架构的两种模式" class="headerlink" title="Feed架构的两种模式"></a>Feed架构的两种模式</h2><p>这里先不考虑底层的数据库缓存队列如何用，先考虑整体的设计方案，Feed架构通常有两种模式，推模式和拉模式。</p>
+<h3 id="推模式"><a href="#推模式" class="headerlink" title="推模式"></a>推模式</h3><p>推模式顾名思义，即PUSH。可以理解为每一个用户都有两个信箱，一个发件箱，一个收件箱。当一个用户发布一条微博时，会将发布的微博放到他自己的发件箱，然后系统做处理，将这封微博复制N多份，分别投递到所有的关注了他的用户的收件箱中。然后当一个用户想要查看好友动态的时候，直接从自己的收件箱里把自己收到的消息按照时间排序显示出来就可以了。</p>
+<p>我们可以对推模式进行一些探讨，推模式其实有个很明显的特点，那就是用空间来换取拉取feed的时间。为了保证每个用户都有收件箱和发件箱，就要有很大的存储空间来存储feed表。而且推模式本身也会出现问题，那就是对于系统处理的压力会增大，比如一个大V他有3000万的粉丝，那么他发送了一条微博，如果将这条消息，复制3000w份分发出去，仍然是一个很大的量，对于这列这叫应用，虽然不会要求延迟一定很小，但是对于这种粉丝超级多的大V推模式显然不是一个好的方式。</p>
+<h3 id="拉模式"><a href="#拉模式" class="headerlink" title="拉模式"></a>拉模式</h3><p>拉模式就相对来说简单了，就是当一个用户需要获取feed流的时候，先获得他的关注列表，再找出微博创建人在这个列表内的微博，然后按照时间降序取就可以了，相比来说拉模式的逻辑更加简单一些了。</p>
+<p>拉模式与推模式正好相反，就是利用时间来换取空间，用户在拉取feed的时候需要先获取用户的关注列表，再取查这些人发布的微博，获得最新的feed页面。那么如何保证响应时间，能够保证在一定时间为完成这个过程。这种模式就适合关注数并不是很多的那种，正好能够解决推模式中无法很好解决的粉丝过多的问题。</p>
+<h3 id="推拉模式的对比"><a href="#推拉模式的对比" class="headerlink" title="推拉模式的对比"></a>推拉模式的对比</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">情况</th>
+<th style="text-align:center">推模式</th>
+<th style="text-align:center">拉模式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">获取Feed</td>
+<td style="text-align:center">简单高效</td>
+<td style="text-align:center">实时计算量大，与关注数量相关</td>
+</tr>
+<tr>
+<td style="text-align:center">发布Feed</td>
+<td style="text-align:center">要推送给所有粉丝</td>
+<td style="text-align:center">不需要推送</td>
+</tr>
+<tr>
+<td style="text-align:center">好友关系变更</td>
+<td style="text-align:center">关注和取关都需要feed变更</td>
+<td style="text-align:center">不需要处理</td>
+</tr>
+<tr>
+<td style="text-align:center">关注多粉丝少</td>
+<td style="text-align:center">合适</td>
+<td style="text-align:center">不合适</td>
+</tr>
+<tr>
+<td style="text-align:center">关注少粉丝多</td>
+<td style="text-align:center">不合适</td>
+<td style="text-align:center">合适</td>
+</tr>
+<tr>
+<td style="text-align:center">关注多粉丝多</td>
+<td style="text-align:center">？</td>
+<td style="text-align:center">？</td>
+</tr>
+</tbody>
+</table>
+<p>其实可以看出，推模式和拉模式各有各的优势和劣势，所以更加合适的方法应该是推拉结合，那么这样的话问题就来了，边界值如何设置，到底什么时候该推什么时候该拉？</p>
 
           
         
