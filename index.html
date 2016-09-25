@@ -342,7 +342,11 @@
         
           
             <p>这个系列主要是分享在新兵训练营学到的关于feed架构的设计，之间包括很多的内容，包括分库，分表，队列，缓存，主从等内容</p>
-<h3 id="什么是Feed架构"><a href="#什么是Feed架构" class="headerlink" title="什么是Feed架构"></a>什么是Feed架构</h3><p>既然是做feed架构的设计，那么第一件事就是解释什么是feed。简单来说，就是用户之间可以关注，用户可以发布信息，而关注他的人就可以看到他的动态，微博，twitter，facebook，微信朋友圈等都是典型的feed。<br><img src="https://odufsglth.qnssl.com/16-9-21/94780335.jpg" alt="微博"></p>
+<h3 id="什么是Feed架构"><a href="#什么是Feed架构" class="headerlink" title="什么是Feed架构"></a>什么是Feed架构</h3><p>既然是做feed架构的设计，那么第一件事就是解释什么是feed。简单来说，就是用户之间可以关注，用户可以发布信息，而关注他的人就可以看到他的动态。微博，twitter，facebook，微信朋友圈等都是典型的feed。</p>
+<div align="center"><br><img src="https://odufsglth.qnssl.com/16-9-21/94780335.jpg" width="80%" height="80%" alt="微博截图"><br></div>
+
+<h3 id="Feed架构的两种模式"><a href="#Feed架构的两种模式" class="headerlink" title="Feed架构的两种模式"></a>Feed架构的两种模式</h3><p>这里先不考虑底层的数据库缓存队列如何用，先考虑整体的设计方案，Feed架构通常有两种模式，推模式和拉模式。</p>
+<h4 id="推模式"><a href="#推模式" class="headerlink" title="推模式"></a>推模式</h4><p>推模式顾名思义，即PUSH。可以理解为每一个用户都有两个信箱，一个发件箱，一个收件箱。当一个用户发布一条微博时，会将发布的微博放到他自己的发件箱，然后系统做处理，将这封微博复制多份，投递到所有的关注了他的用户的收件箱中。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
 <p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
 <h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
