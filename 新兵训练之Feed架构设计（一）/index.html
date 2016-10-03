@@ -97,7 +97,7 @@
 <meta property="og:description" content="这个系列主要是分享在新兵训练营学到的关于feed架构的设计，之间包括很多的内容，包括分库，分表，队列，缓存，主从等内容。
 什么是Feed架构既然是做feed架构的设计，那么第一件事就是解释什么是feed。简单来说，就是用户之间可以关注，用户可以发布信息，而关注他的人就可以看到他的动态。微博，twitter，facebook，微信朋友圈等都是典型的feed。">
 <meta property="og:image" content="https://odufsglth.qnssl.com/16-9-21/94780335.jpg">
-<meta property="og:updated_time" content="2016-09-25T16:24:26.000Z">
+<meta property="og:updated_time" content="2016-10-03T10:47:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="新兵训练之Feed架构设计（一）">
 <meta name="twitter:description" content="这个系列主要是分享在新兵训练营学到的关于feed架构的设计，之间包括很多的内容，包括分库，分表，队列，缓存，主从等内容。
@@ -396,6 +396,49 @@
 </tbody>
 </table>
 <p>其实可以看出，推模式和拉模式各有各的优势和劣势，所以更加合适的方法应该是推拉结合，那么这样的话问题就来了，边界值如何设置，到底什么时候该推什么时候该拉？</p>
+<h2 id="目前业界的一些业务实践"><a href="#目前业界的一些业务实践" class="headerlink" title="目前业界的一些业务实践"></a>目前业界的一些业务实践</h2><h3 id="业务形态对比"><a href="#业务形态对比" class="headerlink" title="业务形态对比"></a>业务形态对比</h3><table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center">社交关系</th>
+<th style="text-align:center">关注数</th>
+<th style="text-align:center">粉丝数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Twiteer</td>
+<td style="text-align:center">公开、弱关系</td>
+<td style="text-align:center">上线5000</td>
+<td style="text-align:center">没有限制</td>
+</tr>
+<tr>
+<td style="text-align:center">Weibo</td>
+<td style="text-align:center">公开、弱关系</td>
+<td style="text-align:center">上线3000</td>
+<td style="text-align:center">不需要推送</td>
+</tr>
+<tr>
+<td style="text-align:center">Weixin</td>
+<td style="text-align:center">私密、强关系</td>
+<td style="text-align:center">上限5000</td>
+<td style="text-align:center">上限5000</td>
+</tr>
+</tbody>
+</table>
+<h3 id="工程实践–Twitter"><a href="#工程实践–Twitter" class="headerlink" title="工程实践–Twitter"></a>工程实践–Twitter</h3><ul>
+<li>普通用户基于推方式</li>
+<li>核心关注点为怎么尽快推送给关注者</li>
+<li>大V用户基于拉方式</li>
+</ul>
+<h3 id="工程实践-Weibo"><a href="#工程实践-Weibo" class="headerlink" title="工程实践-Weibo"></a>工程实践-Weibo</h3><ul>
+<li>公开性微博基于拉方式</li>
+<li>核心关注点为怎么提高聚合效率,包括响应时间和成本</li>
+<li>私密性微博基于推方式</li>
+</ul>
+<h3 id="工程实践-Weixin"><a href="#工程实践-Weixin" class="headerlink" title="工程实践-Weixin"></a>工程实践-Weixin</h3><ul>
+<li>完全基于推模式</li>
+</ul>
 
       
     </div>
@@ -436,6 +479,10 @@
           </div>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/新兵训练之Feed架构设计（二）/" rel="prev" title="新兵训练之Feed架构设计（二）">
+                新兵训练之Feed架构设计（二） <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -507,7 +554,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-count">5</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -595,7 +642,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是Feed架构"><span class="nav-number">1.</span> <span class="nav-text">什么是Feed架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Feed架构的两种模式"><span class="nav-number">2.</span> <span class="nav-text">Feed架构的两种模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#推模式"><span class="nav-number">2.1.</span> <span class="nav-text">推模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#拉模式"><span class="nav-number">2.2.</span> <span class="nav-text">拉模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#推拉模式的对比"><span class="nav-number">2.3.</span> <span class="nav-text">推拉模式的对比</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是Feed架构"><span class="nav-number">1.</span> <span class="nav-text">什么是Feed架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Feed架构的两种模式"><span class="nav-number">2.</span> <span class="nav-text">Feed架构的两种模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#推模式"><span class="nav-number">2.1.</span> <span class="nav-text">推模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#拉模式"><span class="nav-number">2.2.</span> <span class="nav-text">拉模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#推拉模式的对比"><span class="nav-number">2.3.</span> <span class="nav-text">推拉模式的对比</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#目前业界的一些业务实践"><span class="nav-number">3.</span> <span class="nav-text">目前业界的一些业务实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#业务形态对比"><span class="nav-number">3.1.</span> <span class="nav-text">业务形态对比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#工程实践–Twitter"><span class="nav-number">3.2.</span> <span class="nav-text">工程实践–Twitter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#工程实践-Weibo"><span class="nav-number">3.3.</span> <span class="nav-text">工程实践-Weibo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#工程实践-Weixin"><span class="nav-number">3.4.</span> <span class="nav-text">工程实践-Weixin</span></a></li></ol></li></ol></div>
             
           </div>
         </section>
