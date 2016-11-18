@@ -340,82 +340,12 @@
 
       
         
-          
-            <p>　　这是这个系列的第二篇，最近还是太懒了，拖了好久。本篇主要是分析一下Feed架构的业务逻辑，和三种方式的设计。首先是Feed业务中的五个核心操作 ： weibo/create  weibo/delete  follow/create  follow/delete  user/feedline ，两种模式：拉模式 推模式。首先提供几张基本表:</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">weibo</th>
-<th style="text-align:center">weibo_index</th>
-<th style="text-align:center">user</th>
-<th style="text-align:center">user_index</th>
-<th style="text-align:center">follow</th>
-<th style="text-align:center">fans</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">id</td>
-<td style="text-align:center">id</td>
-<td style="text-align:center">id</td>
-<td style="text-align:center">id</td>
-<td style="text-align:center">id</td>
-<td style="text-align:center">id</td>
-</tr>
-<tr>
-<td style="text-align:center">content</td>
-<td style="text-align:center">uid</td>
-<td style="text-align:center">name</td>
-<td style="text-align:center">gender</td>
-<td style="text-align:center">uid</td>
-<td style="text-align:center">uid</td>
-</tr>
-<tr>
-<td style="text-align:center">image</td>
-<td style="text-align:center">time</td>
-<td style="text-align:center">avatar</td>
-<td style="text-align:center">geo</td>
-<td style="text-align:center">follow_id</td>
-<td style="text-align:center">fans_id</td>
-</tr>
-<tr>
-<td style="text-align:center"></td>
-<td style="text-align:center">geo</td>
-<td style="text-align:center">signature</td>
-<td style="text-align:center"></td>
-<td style="text-align:center">create_at</td>
-<td style="text-align:center">create_at</td>
-</tr>
-</tbody>
-</table>
-<!--+ weibo表(包括 id，content)
-+ weibo_index表(包括 id，uid，time，geo等)
-+ user表(包括，id，name，avatar，signature等)
-+ user_index表(包括 id，gender，geo等)
-+ follow表(包括，id，uid，follow_id)
-+ fans表(包括，id，uid，fans_id)-->
-<p>　　这里之所以把follow和fans表拆开主要是方便后续分表，因为关注关系还是量很大的，我们可以将follow表和fans表根据uid进行hash分表，当然这里weibo表和user表也是可以做分表的，不过因为weibo表和user表不过分表维度并不好找，比如user表可以根据uid，根据注册时间，根据地理位置信息等维度分表，所以这里直接为两张表开一张index表，他们之间id完全相同，里面的维度字段都做索引，每次查找可以先在index表里搜索，拿到id后再去另一张表获取信息。</p>
-<h2 id="拉模式"><a href="#拉模式" class="headerlink" title="拉模式"></a>拉模式</h2><p>　　拉模式用时间换区空间，不存储额外的信息，也是最简单的一种方案,因此就不拆开分析了，weibo/create和weibo/delete都是对于weibo,weibo_index表的增删，follow/create和follow/delete也只是增删follow和fans表内容，稍微复杂一点就是user/feedline，在获取feed列表的时候，首先从follow表中获得当前用户关注所有人的uid，然后在weibo_index表中，筛选uid在他关注列表的weibo_id，再从weibo表中获取数据，再将结果返回。<br>　　拉模式的思路简单明了，但是相对来说，用户在拉取feedline的时候代价很大，需要多次读取数据才能拿到想要的数据信息。</p>
-<h2 id="推模式"><a href="#推模式" class="headerlink" title="推模式"></a>推模式</h2><p>　　今天着重分析推模式的整体过程，首先由于是推模式，新增一张feed表,包括id，uid，weibo_id三个字段，这样简化了拉模式中获取feedline的复杂逻辑，但是在其他四个操作的时候都要做相应的操作。</p>
-<h3 id="follow-create（A关注B）"><a href="#follow-create（A关注B）" class="headerlink" title="follow/create（A关注B）"></a>follow/create（A关注B）</h3><ul>
-<li>首先写入follow和fans表</li>
-<li>将B发布的所有weibo_id塞入A的feed表</li>
-</ul>
-<h3 id="follow-delete（A取关B）"><a href="#follow-delete（A取关B）" class="headerlink" title="follow/delete（A取关B）"></a>follow/delete（A取关B）</h3><ul>
-<li>删除follow和fans表的记录</li>
-<li>将A的feed表中所有是B发布的的weibo_id删除</li>
-</ul>
-<h3 id="weibo-create（A关注B，B发布了微博）"><a href="#weibo-create（A关注B，B发布了微博）" class="headerlink" title="weibo/create（A关注B，B发布了微博）"></a>weibo/create（A关注B，B发布了微博）</h3><ul>
-<li>将新发布的内容写入weibo和weibo_index表中</li>
-<li>将weibo_id塞入B所有粉丝的feed列表中</li>
-</ul>
-<h3 id="weibo-delete（A关注B，B删除了微博）"><a href="#weibo-delete（A关注B，B删除了微博）" class="headerlink" title="weibo/delete（A关注B，B删除了微博）"></a>weibo/delete（A关注B，B删除了微博）</h3><ul>
-<li>将weibo和weibo_index表中的内容删掉</li>
-<li>将B所有粉丝的feed列表中的feed记录删除</li>
-</ul>
-<p>　　本篇仅在分析推拉模式中的逻辑操作，下一篇将着重分析，分表，缓存，队列等方案在推模式中的具体实现。由于拉模式相对简单，就不再讨论了。</p>
-
-          
+          <p>　　这是这个系列的第二篇，最近还是太懒了，拖了好久。本篇主要是分析一下Feed架构的业务逻辑，和三种方式的设计。首先是Feed业务中的五个核心操作 ： weibo/create  weibo/delete  follow/create  follow/delete  user/feedline ，两种模式：拉模式 推模式。
+          <div class="post-more-link text-center">
+            <a class="btn" href="/新兵训练之Feed架构设计（二）/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
