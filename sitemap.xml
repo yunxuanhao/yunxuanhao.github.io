@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yunxuan.site/hello-world/</loc>
+    
+    <lastmod>2017-01-08T16:08:19.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yunxuan.site/memcache%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
+    
+    <lastmod>2017-01-06T07:18:48.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yunxuan.site/%E6%96%B0%E5%85%B5%E8%AE%AD%E7%BB%83%E4%B9%8BFeed%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%EF%BC%88%E4%BA%8C%EF%BC%89/</loc>
     
     <lastmod>2016-11-21T10:26:52.000Z</lastmod>
@@ -61,13 +75,6 @@
     <loc>http://yunxuan.site/tags/index.html</loc>
     
     <lastmod>2016-09-09T03:32:24.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yunxuan.site/hello-world/</loc>
-    
-    <lastmod>2016-09-07T04:52:14.000Z</lastmod>
     
   </url>
   
