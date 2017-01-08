@@ -4,23 +4,8 @@
 
     
   <url>
-    <loc>http://yunxuan.site/hello-world/</loc>
-    <lastmod>2017-01-08T16:08:19.000Z</lastmod>
-    <data>
-        <display>
-        <title>Hello World</title>
-        <pubTime>2016-09-07T04:52:14.000Z</pubTime>
-        
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://yunxuan.site/memcache%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
-    <lastmod>2017-01-06T07:18:48.000Z</lastmod>
+    <lastmod>2017-01-08T16:11:37.000Z</lastmod>
     <data>
         <display>
         <title>memcache内存分配</title>
@@ -35,6 +20,21 @@
              
               <breadCrumb title="缓存" url="http://yunxuan.site/categories/%E7%BC%93%E5%AD%98/"/>
           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yunxuan.site/hello-world/</loc>
+    <lastmod>2017-01-08T16:08:19.000Z</lastmod>
+    <data>
+        <display>
+        <title>Hello World</title>
+        <pubTime>2016-09-07T04:52:14.000Z</pubTime>
+        
+         
+           
         </display>
     </data>
     </url>
@@ -79,21 +79,6 @@
              
               <breadCrumb title="生活小记" url="http://yunxuan.site/categories/%E7%94%9F%E6%B4%BB%E5%B0%8F%E8%AE%B0/"/>
           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yunxuan.site/%E6%96%B0%E5%85%B5%E8%AE%AD%E7%BB%83%E4%B9%8BFeed%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%EF%BC%88%E4%B8%89%EF%BC%89/</loc>
-    <lastmod>2016-11-18T09:42:06.000Z</lastmod>
-    <data>
-        <display>
-        <title>新兵训练之Feed架构设计（三）</title>
-        <pubTime>2016-11-18T09:42:06.000Z</pubTime>
-        
-         
-           
         </display>
     </data>
     </url>
