@@ -6,17 +6,23 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yunxuan.site">
-  <title>Tag: 架构 | echo 午时已到</title>
+  <title>Memcached详解|与Redis对比 | echo 午时已到</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="一只刚刚毕业的菜鸡，在搬砖却不想总是搬砖，最近沉迷屁股不能自拔">
-<meta property="og:type" content="website">
-<meta property="og:title" content="echo 午时已到">
-<meta property="og:url" content="http://yunxuan.site/tags/架构/index.html">
+  <meta name="description" content="在说Memcached内存分配策略之前，先说一下Memcache使用的Slab Allocator内存分配机制。
+Slab allocator：为了避免内存内碎片的问题，按照预先规定的大小，将分配的内存分割成特定长度的块。页框中存储着小于当前页框大小的数据，而且页框是不会销毁的，释放后可以通过申请再次使用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Memcached详解|与Redis对比">
+<meta property="og:url" content="http://yunxuan.site/memcache详解|与Redis对比/index.html">
 <meta property="og:site_name" content="echo 午时已到">
-<meta property="og:description" content="一只刚刚毕业的菜鸡，在搬砖却不想总是搬砖，最近沉迷屁股不能自拔">
+<meta property="og:description" content="在说Memcached内存分配策略之前，先说一下Memcache使用的Slab Allocator内存分配机制。
+Slab allocator：为了避免内存内碎片的问题，按照预先规定的大小，将分配的内存分割成特定长度的块。页框中存储着小于当前页框大小的数据，而且页框是不会销毁的，释放后可以通过申请再次使用。">
+<meta property="og:image" content="https://odufsglth.qnssl.com/2016012109301196.png">
+<meta property="og:updated_time" content="2017-03-04T19:11:15.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="echo 午时已到">
-<meta name="twitter:description" content="一只刚刚毕业的菜鸡，在搬砖却不想总是搬砖，最近沉迷屁股不能自拔">
+<meta name="twitter:title" content="Memcached详解|与Redis对比">
+<meta name="twitter:description" content="在说Memcached内存分配策略之前，先说一下Memcache使用的Slab Allocator内存分配机制。
+Slab allocator：为了避免内存内碎片的问题，按照预先规定的大小，将分配的内存分割成特定长度的块。页框中存储着小于当前页框大小的数据，而且页框是不会销毁的，释放后可以通过申请再次使用。">
+<meta name="twitter:image" content="https://odufsglth.qnssl.com/2016012109301196.png">
   
     <link rel="alternative" href="/atom.xml" title="echo 午时已到" type="application/atom+xml">
   
@@ -152,128 +158,226 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-memcache详解|与Redis对比" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/新兵训练之Feed架构设计（二）/" class="archive-article-date">
-  	<time datetime="2016-10-03T10:05:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-10-03</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/新兵训练之Feed架构设计（二）/">新兵训练之Feed架构设计（二）</a>
+    <h1 class="article-title" itemprop="name">
+      Memcached详解|与Redis对比
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/memcache详解|与Redis对比/" class="archive-article-date">
+  	<time datetime="2017-01-06T06:39:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-01-06</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在说Memcached内存分配策略之前，先说一下Memcache使用的Slab Allocator内存分配机制。</p>
+<p>Slab allocator：为了避免内存内碎片的问题，按照预先规定的大小，将分配的内存分割成特定长度的块。页框中存储着小于当前页框大小的数据，而且页框是不会销毁的，释放后可以通过申请再次使用。</p>
+<a id="more"></a>
+<h2 id="Memcached内存分配机制"><a href="#Memcached内存分配机制" class="headerlink" title="Memcached内存分配机制"></a>Memcached内存分配机制</h2><h3 id="Memcache内存分配"><a href="#Memcache内存分配" class="headerlink" title="Memcache内存分配"></a>Memcache内存分配</h3><p>Memcached存储有三个概念需要搞清楚，分别是page，slab和chunk:</p>
+<ul>
+<li>page对应的实际的物理空间，page的默认大小是1M，可以在启动的时候通过-I参数修改</li>
+<li>chunk是固定大小的内存空间，默认大小为96Byte</li>
+<li>同样大小的chunk被称为slab</li>
+</ul>
+<div align="center"><br><img src="https://odufsglth.qnssl.com/2016012109301196.png" width="80%" height="80%" alt="chunk和slab关系"><br></div>
+
+<p>Memcache启动时通过-m参数可以设置大小，-f参数是slab的增长因子。slab依靠增长因子计算出slab的序列，默认-f的值是1.25，slab2的大小是1.25*slab1，呈现阶梯式的增长。每个page中都会这样分配，page一旦被分配在重启前不会被回收或者重新分配。而整个-m定义的大小空间又被这样分配，不过总的大小空间是随着数据的存入才会逐渐进行分配使用的。</p>
+<p>如果一个新的缓存数据要被存放，memcached首先选择一个合适的slab，然后查看该slab是否还有空闲的chunk，如果有则直接存放进去，如果没有则要进行申请。slab申请内存时以page为单位，所以在放入第一个数据时无论大小为多少，都会有1M大小的page被分配给该slab。申请到page后，slab会将这个page的内存按chunk的大小进行切分，这样就变成了一个chunk的数组，再从这个chunk数组中选择一个用于存储数据。</p>
+<h3 id="惰性释放策略"><a href="#惰性释放策略" class="headerlink" title="惰性释放策略"></a>惰性释放策略</h3><p>memcached中过期的数据不会自动清除。当记录失效之后，仅仅是对于访问的客户端透明。但是memcached本身也不会将过期的数据删除，因此不会在监视过期数据上耗费CPU，这种就是惰性释放策略。而memcached在存储时，如果已满，则采用Least Recently Used（LRU）策略，来清除最近最少使用的数据。</p>
+<h2 id="与Redis的对比"><a href="#与Redis的对比" class="headerlink" title="与Redis的对比"></a>与Redis的对比</h2><h3 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h3><p>Redis的数据类型比较比较多，有Hash，Set，List，zSet等，使用场景更加丰富，Memcached只有key-value类型。</p>
+<h3 id="事务性"><a href="#事务性" class="headerlink" title="事务性"></a>事务性</h3><p>Redis可以通过MULTI,EXEC等命令来支持事务，而memcached除了increment/decrement这样的原子操作命令，不存在对事务的支持。</p>
+<h3 id="数据持久化"><a href="#数据持久化" class="headerlink" title="数据持久化"></a>数据持久化</h3><p>memcached是不保证数据的有效性的，基于LRU的淘汰策略会使得部分数据丢失，，但是有许多基于memcached协议的项目实现了数据的持久化，例如memcache DB使用BerkeleyDB进行数据存储，但本质上它已经不是一个cache server，而只是一个兼容memcached的协议key-valueData Store了</p>
+<p>Redis自持主从，内建支持两种持久化方案，snapshot快照和AOF增量Log方式。快照顾名思义就是隔一段时间将完整的数据dump下来存储在文件中。AOF增量Log则是记录对数据的修改操作（实际上记录的就是每个对数据产生修改的命令本身），两种方案可以并存，也各有优缺点，具体参见<a href="http://redis.io/topics/persistence" target="_blank" rel="external">Redis Persistence</a></p>
+<p>以上Redis的数据备份持久化方案等，如果不需要，为了提高性能，也完全可以Disable</p>
+<h3 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h3><p>Memcached自身并不主动定期检查和标记哪些数据需要被淘汰，只有当再次读取相关数据时才检查时间戳，或者当内存不够使用需要主动淘汰数据时进一步检查LRU数据。</p>
+<p>Redis为了减少大量小数据CMD操作的网络通讯时间开销 RTT (Round Trip Time)，支持pipeline和script技术。</p>
+<p>所谓的pipeline就是支持在一次通讯中，发送多个命令给服务器批量执行，带来的代价是服务器端需要更多的内存来缓存查询结果。</p>
+<p>Redis内嵌了LUA解析器，可以执行lua脚本，脚本可以通过eval等命令直接执行，也可以使用script load等方式上传到服务器端的script cache中重复使用。</p>
+<p>这两种方式都可以有效地减少网络通讯开销，增加数据吞吐率。</p>
+<p>对于KV的操作，memcached和Redis都支持multiple的get和set命令（memcached的multiple set命令貌似只在二进制的协议中支持），这同样有利于性能的提升。</p>
+<p>实际性能方面，网上有很多测试比较，给出的结果各不相同，这无疑和各种测试的测试用例，测试环境，和测试时具体使用的客户端Library实现有关。但是总体看下来，比较靠谱的结论是在kv类操作上，两者的性能接近，memcached的结构更加简单，理论上应该会略微快一些。</p>
+<h3 id="对比总结"><a href="#对比总结" class="headerlink" title="对比总结"></a>对比总结</h3><p>Redis的作者Salvatore Sanfilippo曾经对这两种基于内存的数据存储系统进行过比较，总体来看还是比较客观的，现总结如下：</p>
+<ul>
+<li>性能对比：由于Redis只使用单核，而memcached可以使用多核，所以平均每一个核上Redis在存储小数据时比memcached性能更高。而在100k以上的数据中，memcached性能要高于Redis，虽然Redis最近也在存储大数据的性能上进行优化，但是比起memcached，还是稍有逊色。</li>
+<li>内存使用效率对比：使用简单的key-value存储的话，memcached的内存利用率更高，而如果Redis采用hash结构来做key-value存储，由于其组合式的压缩，其内存利用率会高于memcached。另外，memcached使用预分配的内存池的方式，带来一定程度的空间浪费 并且在内存仍然有很大空间时，新的数据也可能会被剔除，而Redis使用现场申请内存的方式来存储数据，不会剔除任何非临时数据 Redis更适合作为存储而不是cache。</li>
+<li>Redis支持服务器端的数据操作：Redis相比memcached来说，拥有更多的数据结构和并支持更丰富的数据操作，通常在memcached里，你需要将数据拿到客户端来进行类似的修改再set回去。这大大增加了网络IO的次数和数据体积。在Redis中，这些复杂的操作通常和一般的GET/SET一样高效。所以，如果需要缓存能够支持更复杂的结构和操作，那么Redis会是不错的选择。</li>
+</ul>
+<p>另外，贴一些前辈们使用Redis的经验和教训：</p>
+<ul>
+<li>要进行master-slave配置，出现服务故障时可以支持切换。</li>
+<li>在master侧禁用数据持久化，只需在slave上配置数据持久化。</li>
+<li>物理内存+虚拟内存不足，这个时候dump一直死着，时间久了机器挂掉。这个情况就是灾难。</li>
+<li>当Redis物理内存使用超过内存总容量的3/5时就会开始比较危险了，就开始做swap,内存碎片大。</li>
+<li>当达到最大内存时，会清空带有过期时间的key，即使key未到过期时间。</li>
+<li>Redis与DB同步写的问题，先写DB，后写Redis，因为写内存基本上没有问题。</li>
+</ul>
+<h2 id="需要注意的点"><a href="#需要注意的点" class="headerlink" title="需要注意的点"></a>需要注意的点</h2><ul>
+<li>memcache分配给某个slab的内存页不能再分配给其他slab。</li>
+<li>flush_all不能重置memcache分配内存页的格局，只是给所有的item置为过期。</li>
+<li>启动memcached时可以通过-M参数禁止LRU替换，在内存用尽时add和set会返回失败</li>
+<li>由于memcache的分布式是客户端程序通过hash算法得到的key取模来实现，不同的语言可能会采用不同的hash算法，同样的客户端程序也有可能使用相异的方法，因此在多语言、多模块共用同一组memcached服务时，一定要注意在客户端选择相同的hash算法（之前有过php写入MC但是用go直接读取MC读到的数据无法解析）</li>
+<li>memcached启动时指定的是数据存储量，没有包括本身占用的内存、以及为了保存数据而设置的管理空间。因此它占用的内存量会多于启动时指定的内存分配量，这点需要注意。</li>
+<li>memcache存储的时候对key的长度有限制，php和C的最大长度都是250</li>
+</ul>
+<p>参考文章: </p>
+<ul>
+<li><a href="http://www.jianshu.com/p/e94fa7340923" target="_blank" rel="external">memcached Redis 对比分析</a></li>
+<li><a href="http://www.ywnds.com/?p=2999" target="_blank" rel="external">Memcached内存分配策略</a></li>
+<li><a href="https://www.oschina.net/code/snippet_1046345_44173#61852" target="_blank" rel="external">Memcache内存分配 | Memcache存储策略</a></li>
+</ul>
+<!--http://www.ywnds.com/?p=2999
+
+http://www.ywnds.com/?p=4770
+
+http://blog.csdn.net/scalzdp/article/details/25717531  简单对比Redis
+
+https://www.oschina.net/code/snippet_1046345_44173#61852-->
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">架构</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Memcached</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Feed</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">缓存</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Redis</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Feed架构分享/" class="article-tag-list-link color4">Feed架构分享</a>
+        			<a href="/categories/缓存/" class="article-tag-list-link color3">缓存</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yunxuan.site/memcache详解|与Redis对比/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/新兵训练之Feed架构设计（一）/" class="archive-article-date">
-  	<time datetime="2016-09-09T08:49:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-09-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/新兵训练之Feed架构设计（一）/">新兵训练之Feed架构设计（一）</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">架构</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Feed</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Feed架构分享/" class="article-tag-list-link color4">Feed架构分享</a>
-        		</li>
-      		
-		</ul>
-	</div>
+  
+<nav id="article-nav">
+  
+  
+    <a href="/斗志消磨慢点吧/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">斗志消磨慢点吧</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+
+
+
+
   
-  
-    </div></section>
+  <div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="memcache详解|与Redis对比" data-title="Memcached详解|与Redis对比" data-url="http://yunxuan.site/memcache详解|与Redis对比/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"yunxuansite"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
   
 
-    
+
 
 
           </div>
@@ -296,9 +400,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		root: "/",
