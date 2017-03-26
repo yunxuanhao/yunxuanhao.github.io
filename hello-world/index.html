@@ -273,91 +273,7 @@
 
 
     
-         <style type="text/css"> 
-//网易云跟帖评论样式增添
-.post-comments-count a::before {
-    content: "评论";
-}
-#yun-tie-sdk-wrap .input-box .tie-submit-row .tie-submit-btn {
-    background-color: #649ab6;
-}
-#yun-tie-sdk-wrap .input-box .tie-submit-row .tie-submit-btn:hover {
-    background-color: #4c618f;
-}
-.tie-empty-tip {
-    display: none;
-}
-//即将发布消息人样式
-#yun-tie-sdk-wrap .input-box .tie-submit-row .user-info img:hover {
-box-shadow: 0 0 10px #fff;
-rgba(255, 255, 255, .6) inset 0 0 20px rgba(255, 255, 255, 1);
--webkit-box-shadow: 0 0 10px #fff;
-rgba(255, 255, 255, .6) inset 0 0 20px rgba(255, 255, 255, 1);
-transform: rotateZ(360deg); 
--webkit-transform: rotateZ(360deg);
--moz-transform: rotateZ(360deg);
-}
-#yun-tie-sdk-wrap .input-box .tie-submit-row .user-info img {
-width: 32px;
-height: 32px;
-border-radius: 50%;
-margin: 4px 10px 4px 8px;
-padding: 0;
-cursor: pointer;
-box-shadow: inset 0 -1px 0 #3333sf; /*设置图像阴影效果*/
--webkit-box-shadow: inset 0 -1px 0 #3333sf;
--webkit-transition: 0.4s;
--webkit-transition: -webkit-transform 0.4s ease-out;
-transition: transform 0.4s ease-out; /*变化时间设置为0.4秒(变化动作即为下面的图像旋转360读）*/
--moz-transition: -moz-transform 0.4s ease-out;
-}
-//评论框内其他人样式
-#yun-tie-sdk-wrap .single-tie .photo img:hover {
-box-shadow: 0 0 10px #fff;
-rgba(255, 255, 255, .6) inset 0 0 20px rgba(255, 255, 255, 1);
--webkit-box-shadow: 0 0 10px #fff;
-rgba(255, 255, 255, .6) inset 0 0 20px rgba(255, 255, 255, 1);
-transform: rotateZ(360deg); 
--webkit-transform: rotateZ(360deg);
--moz-transform: rotateZ(360deg);
-}
-#yun-tie-sdk-wrap .single-tie .photo img {
-width: 42px;
-height: 42px;
-border-radius: 50%;
-padding: 0;
-cursor: pointer;
-box-shadow: inset 0 -1px 0 #3333sf; /*设置图像阴影效果*/
--webkit-box-shadow: inset 0 -1px 0 #3333sf;
--webkit-transition: 0.4s;
--webkit-transition: -webkit-transform 0.4s ease-out;
-transition: transform 0.4s ease-out; /*变化时间设置为0.4秒(变化动作即为下面的图像旋转360读）*/
--moz-transition: -moz-transform 0.4s ease-out;
-}
-.name-nick:hover {
-    border-left: 14px solid #3264b4;
-}
-.name-desp:hover {
-    border-left: 14px solid #3264b4;
-}
-#yun-tie-sdk-wrap .single-tie .tie-author .name-nick{
-    cursor: pointer;
-    transition: border-width 0.3s linear 0.1s, color 0.2s linear 0.3s;
-}
-#yun-tie-sdk-wrap .single-tie .tie-author .name-desp {
-    cursor: pointer;
-    transition: border-width 0.3s linear 0.1s, color 0.2s linear 0.3s;
-}
-.tie-time:hover {
-    border-right: 14px solid #3264b4;
-}
-#yun-tie-sdk-wrap .single-tie .tie-time {
-    transition: border-width 0.3s linear 0.1s, color 0.2s linear 0.3s;
-    cursor: pointer;
-}
-</style>
-
-<div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+        <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
 <script>
   var cloudTieConfig = {
     url: document.location.href, 
@@ -476,6 +392,10 @@ transition: transform 0.4s ease-out; /*变化时间设置为0.4秒(变化动作�
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">职场经验</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">生活小记</a>
               </li>
              
@@ -489,10 +409,6 @@ transition: transform 0.4s ease-out; /*变化时间设置为0.4秒(变化动作�
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Feed</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">职场经验</a>
               </li>
             
             <div class="clearfix"></div>
