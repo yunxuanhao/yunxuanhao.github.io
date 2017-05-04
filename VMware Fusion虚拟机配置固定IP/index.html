@@ -8,16 +8,25 @@
   <link rel="dns-prefetch" href="http://yunxuan.site">
   <title>VMware Fusion虚拟机配置固定IP | echo 午时已到</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="一只刚刚毕业的菜鸡，在搬砖却不想总是搬砖，最近沉迷屁股不能自拔">
+  <meta name="description" content="关闭VMware Fusion关闭DHCP因为要设置静态的固定IP，自然首先要关掉DHCP，但是由于mac上的VMware Fusion并没有可视化的界面去配置网络，因此只能通过直接修改配置文件来修改
+进入配置目录
+1$ sudo vim /Library/Preferences/VMware\ Fusion/networking
+其中有一行VNET_8_DHCP yes```，将yes改成no就">
 <meta property="og:type" content="article">
 <meta property="og:title" content="VMware Fusion虚拟机配置固定IP">
 <meta property="og:url" content="http://yunxuan.site/VMware Fusion虚拟机配置固定IP/index.html">
 <meta property="og:site_name" content="echo 午时已到">
-<meta property="og:description" content="一只刚刚毕业的菜鸡，在搬砖却不想总是搬砖，最近沉迷屁股不能自拔">
-<meta property="og:updated_time" content="2017-03-26T15:39:57.000Z">
+<meta property="og:description" content="关闭VMware Fusion关闭DHCP因为要设置静态的固定IP，自然首先要关掉DHCP，但是由于mac上的VMware Fusion并没有可视化的界面去配置网络，因此只能通过直接修改配置文件来修改
+进入配置目录
+1$ sudo vim /Library/Preferences/VMware\ Fusion/networking
+其中有一行VNET_8_DHCP yes```，将yes改成no就">
+<meta property="og:updated_time" content="2017-05-04T08:11:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="VMware Fusion虚拟机配置固定IP">
-<meta name="twitter:description" content="一只刚刚毕业的菜鸡，在搬砖却不想总是搬砖，最近沉迷屁股不能自拔">
+<meta name="twitter:description" content="关闭VMware Fusion关闭DHCP因为要设置静态的固定IP，自然首先要关掉DHCP，但是由于mac上的VMware Fusion并没有可视化的界面去配置网络，因此只能通过直接修改配置文件来修改
+进入配置目录
+1$ sudo vim /Library/Preferences/VMware\ Fusion/networking
+其中有一行VNET_8_DHCP yes```，将yes改成no就">
   
     <link rel="alternative" href="/atom.xml" title="echo 午时已到" type="application/atom+xml">
   
@@ -166,14 +175,41 @@
 
         
         <a href="/VMware Fusion虚拟机配置固定IP/" class="archive-article-date">
-  	<time datetime="2017-03-05T16:48:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-06</time>
+  	<time datetime="2017-03-05T08:48:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-05</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <h2 id="关闭VMware-Fusion关闭DHCP"><a href="#关闭VMware-Fusion关闭DHCP" class="headerlink" title="关闭VMware Fusion关闭DHCP"></a>关闭VMware Fusion关闭DHCP</h2><p>因为要设置静态的固定IP，自然首先要关掉DHCP，但是由于mac上的VMware Fusion并没有可视化的界面去配置网络，因此只能通过直接修改配置文件来修改</p>
+<p>进入配置目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo vim /Library/Preferences/VMware\ Fusion/networking</div></pre></td></tr></table></figure>
+<p>其中有一行<figure class="highlight plain"><figcaption><span>VNET_8_DHCP yes```，将yes改成no就可以关掉DHCP了。</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div><div class="line">## 查看网关和DNS</div><div class="line"></div><div class="line">现在要查看下我们要设置的静态ip的网关和DNS</div><div class="line"></div><div class="line">打开文件</div><div class="line"></div><div class="line">``` bash</div><div class="line">vim /Library/Preferences/VMware\ Fusion/vmnet8/dhcpd.conf</div></pre></td></tr></table></figure></p>
+<p>其中</p>
+<ul>
+<li><code>range</code>就是可选的静态ip的范围</li>
+<li><code>option broadcast-address</code>是广播地址，也是我们的默认网关地址</li>
+<li><code>option domain-name-servers</code>就是DNS地址</li>
+</ul>
+<p>我们之后在虚拟机里设置ip和网关和dns就要根据这个进行设置了</p>
+<h2 id="centos6-7的虚拟机配置"><a href="#centos6-7的虚拟机配置" class="headerlink" title="centos6.7的虚拟机配置"></a>centos6.7的虚拟机配置</h2><p>接下来就要设置虚拟机中的静态IP</p>
+<p>涉及到的两个文件</p>
+<ul>
+<li>/etc/sysconfig/network</li>
+<li>/etc/sysconfig/network-scripts/ifcfg-eth0</li>
+</ul>
+<h4 id="etc-sysconfig-network"><a href="#etc-sysconfig-network" class="headerlink" title="/etc/sysconfig/network"></a>/etc/sysconfig/network</h4><p>设置网关<code>GATEWAY=默认网关</code></p>
+<h4 id="etc-sysconfig-network-scripts-ifcfg-eth0"><a href="#etc-sysconfig-network-scripts-ifcfg-eth0" class="headerlink" title="/etc/sysconfig/network-scripts/ifcfg-eth0"></a>/etc/sysconfig/network-scripts/ifcfg-eth0</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">DEVICE=&quot;eth0&quot;  </div><div class="line">BOOTPROTO=&quot;static&quot;  </div><div class="line">IPADDR=192.168.110.129  			// 之前的IP范围中任选</div><div class="line">NETMASK=255.255.255.0  </div><div class="line">HWADDR=&quot;00:0C:29:53:A8:1D&quot;  </div><div class="line">IPV6INIT=&quot;no&quot;  </div><div class="line">NM_CONTROLLED=&quot;yes&quot;  </div><div class="line">ONBOOT=&quot;yes&quot;  </div><div class="line">TYPE=&quot;Ethernet&quot;  </div><div class="line">UUID=&quot;f933b2bf-47eb-42f3-bea9-1f54088a2cb7&quot;  </div><div class="line">DNS1=192.168.110.2  				// DNS</div><div class="line">GATEWAY=192.168.110.255				// 默认网关</div></pre></td></tr></table></figure>
+<p>这样配置后重启就会生效，虚拟机的ip就会固定，可以直接在宿主机上ping虚拟机了</p>
+<p>不过正常开发我们一般虚拟机都在后台运行，需要进入虚拟机配置的时候直接在终端ssh，因此为了方便可以设置使用秘钥免密登录服务器，具体可以参考这边篇文章<a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">ssh public key认证免密码登录</a></p>
+<p>参考文章: </p>
+<ul>
+<li><a href="http://blog.csdn.net/miiser/article/details/44419759" target="_blank" rel="external">Mac VMware fusion 专用网络关闭DHCP</a></li>
+<li><a href="http://sinoon.github.io/2015/08/26/VMware-Fusion-Nat%E9%93%BE%E6%8E%A5%E6%96%B9%E5%BC%8F%E4%B8%8B%E5%9B%BA%E5%AE%9AIP/" target="_blank" rel="external">VMware Fusion Nat链接方式下固定IP</a></li>
+<li><a href="http://www.voidcn.com/blog/jbfsdzpp/article/p-3025399.html" target="_blank" rel="external">VMware虚拟机中CentOS 6.4设置固定IP</a></li>
+</ul>
+
       
 
       
