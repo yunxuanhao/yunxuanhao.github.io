@@ -8,25 +8,16 @@
   <link rel="dns-prefetch" href="http://yunxuan.site">
   <title>VMware Fusion虚拟机配置固定IP | echo 午时已到</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="关闭VMware Fusion关闭DHCP因为要设置静态的固定IP，自然首先要关掉DHCP，但是由于mac上的VMware Fusion并没有可视化的界面去配置网络，因此只能通过直接修改配置文件来修改
-进入配置目录
-1$ sudo vim /Library/Preferences/VMware\ Fusion/networking
-其中有一行VNET_8_DHCP yes```，将yes改成no就">
+  <meta name="description" content="现在做开发一般都不是在本机开发，一般是在虚拟机或者docker中配置开发环境，代码同步到虚拟机中进行调试，这样既能够保证开发环境和线上环境能够更加相同，而且也能够使本地足够的干净，不至于被大量的开发组件搞得焦头烂额，这次我们要说的就是在mac上使用VMware Fusion配置虚拟机的静态IP">
 <meta property="og:type" content="article">
 <meta property="og:title" content="VMware Fusion虚拟机配置固定IP">
 <meta property="og:url" content="http://yunxuan.site/VMware Fusion虚拟机配置固定IP/index.html">
 <meta property="og:site_name" content="echo 午时已到">
-<meta property="og:description" content="关闭VMware Fusion关闭DHCP因为要设置静态的固定IP，自然首先要关掉DHCP，但是由于mac上的VMware Fusion并没有可视化的界面去配置网络，因此只能通过直接修改配置文件来修改
-进入配置目录
-1$ sudo vim /Library/Preferences/VMware\ Fusion/networking
-其中有一行VNET_8_DHCP yes```，将yes改成no就">
-<meta property="og:updated_time" content="2017-05-04T08:11:36.000Z">
+<meta property="og:description" content="现在做开发一般都不是在本机开发，一般是在虚拟机或者docker中配置开发环境，代码同步到虚拟机中进行调试，这样既能够保证开发环境和线上环境能够更加相同，而且也能够使本地足够的干净，不至于被大量的开发组件搞得焦头烂额，这次我们要说的就是在mac上使用VMware Fusion配置虚拟机的静态IP">
+<meta property="og:updated_time" content="2017-05-04T08:17:43.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="VMware Fusion虚拟机配置固定IP">
-<meta name="twitter:description" content="关闭VMware Fusion关闭DHCP因为要设置静态的固定IP，自然首先要关掉DHCP，但是由于mac上的VMware Fusion并没有可视化的界面去配置网络，因此只能通过直接修改配置文件来修改
-进入配置目录
-1$ sudo vim /Library/Preferences/VMware\ Fusion/networking
-其中有一行VNET_8_DHCP yes```，将yes改成no就">
+<meta name="twitter:description" content="现在做开发一般都不是在本机开发，一般是在虚拟机或者docker中配置开发环境，代码同步到虚拟机中进行调试，这样既能够保证开发环境和线上环境能够更加相同，而且也能够使本地足够的干净，不至于被大量的开发组件搞得焦头烂额，这次我们要说的就是在mac上使用VMware Fusion配置虚拟机的静态IP">
   
     <link rel="alternative" href="/atom.xml" title="echo 午时已到" type="application/atom+xml">
   
@@ -182,7 +173,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="关闭VMware-Fusion关闭DHCP"><a href="#关闭VMware-Fusion关闭DHCP" class="headerlink" title="关闭VMware Fusion关闭DHCP"></a>关闭VMware Fusion关闭DHCP</h2><p>因为要设置静态的固定IP，自然首先要关掉DHCP，但是由于mac上的VMware Fusion并没有可视化的界面去配置网络，因此只能通过直接修改配置文件来修改</p>
+        <p>现在做开发一般都不是在本机开发，一般是在虚拟机或者docker中配置开发环境，代码同步到虚拟机中进行调试，这样既能够保证开发环境和线上环境能够更加相同，而且也能够使本地足够的干净，不至于被大量的开发组件搞得焦头烂额，这次我们要说的就是在mac上使用VMware Fusion配置虚拟机的静态IP</p>
+<a id="more"></a>
+<h2 id="关闭VMware-Fusion关闭DHCP"><a href="#关闭VMware-Fusion关闭DHCP" class="headerlink" title="关闭VMware Fusion关闭DHCP"></a>关闭VMware Fusion关闭DHCP</h2><p>因为要设置静态的固定IP，自然首先要关掉DHCP，但是由于mac上的VMware Fusion并没有可视化的界面去配置网络，因此只能通过直接修改配置文件来修改</p>
 <p>进入配置目录</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo vim /Library/Preferences/VMware\ Fusion/networking</div></pre></td></tr></table></figure>
 <p>其中有一行<figure class="highlight plain"><figcaption><span>VNET_8_DHCP yes```，将yes改成no就可以关掉DHCP了。</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div><div class="line">## 查看网关和DNS</div><div class="line"></div><div class="line">现在要查看下我们要设置的静态ip的网关和DNS</div><div class="line"></div><div class="line">打开文件</div><div class="line"></div><div class="line">``` bash</div><div class="line">vim /Library/Preferences/VMware\ Fusion/vmnet8/dhcpd.conf</div></pre></td></tr></table></figure></p>
@@ -448,19 +441,19 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">踩坑</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">线上问题处理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">生活小记</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">贝壳</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">踩坑</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">线上问题处理</a>
               </li>
              
               <li class="article-tag-list-item">
