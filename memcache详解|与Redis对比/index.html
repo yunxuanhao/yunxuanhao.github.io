@@ -1,27 +1,26 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yunxuan.site">
   <title>Memcached详解|与Redis对比 | echo 午时已到</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="在说Memcached内存分配策略之前，先说一下Memcache使用的Slab Allocator内存分配机制。
-Slab allocator：为了避免内存内碎片的问题，按照预先规定的大小，将分配的内存分割成特定长度的块。页框中存储着小于当前页框大小的数据，而且页框是不会销毁的，释放后可以通过申请再次使用。">
+  <meta name="description" content="在说Memcached内存分配策略之前，先说一下Memcache使用的Slab Allocator内存分配机制。 Slab allocator：为了避免内存内碎片的问题，按照预先规定的大小，将分配的内存分割成特定长度的块。页框中存储着小于当前页框大小的数据，而且页框是不会销毁的，释放后可以通过申请再次使用。">
+<meta name="keywords" content="Memcached详解|与Redis对比">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Memcached详解|与Redis对比">
 <meta property="og:url" content="http://yunxuan.site/memcache详解|与Redis对比/index.html">
 <meta property="og:site_name" content="echo 午时已到">
-<meta property="og:description" content="在说Memcached内存分配策略之前，先说一下Memcache使用的Slab Allocator内存分配机制。
-Slab allocator：为了避免内存内碎片的问题，按照预先规定的大小，将分配的内存分割成特定长度的块。页框中存储着小于当前页框大小的数据，而且页框是不会销毁的，释放后可以通过申请再次使用。">
+<meta property="og:description" content="在说Memcached内存分配策略之前，先说一下Memcache使用的Slab Allocator内存分配机制。 Slab allocator：为了避免内存内碎片的问题，按照预先规定的大小，将分配的内存分割成特定长度的块。页框中存储着小于当前页框大小的数据，而且页框是不会销毁的，释放后可以通过申请再次使用。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://odufsglth.qnssl.com/2016012109301196.png">
 <meta property="og:updated_time" content="2017-03-04T19:11:15.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Memcached详解|与Redis对比">
-<meta name="twitter:description" content="在说Memcached内存分配策略之前，先说一下Memcache使用的Slab Allocator内存分配机制。
-Slab allocator：为了避免内存内碎片的问题，按照预先规定的大小，将分配的内存分割成特定长度的块。页框中存储着小于当前页框大小的数据，而且页框是不会销毁的，释放后可以通过申请再次使用。">
+<meta name="twitter:description" content="在说Memcached内存分配策略之前，先说一下Memcache使用的Slab Allocator内存分配机制。 Slab allocator：为了避免内存内碎片的问题，按照预先规定的大小，将分配的内存分割成特定长度的块。页框中存储着小于当前页框大小的数据，而且页框是不会销毁的，释放后可以通过申请再次使用。">
 <meta name="twitter:image" content="https://odufsglth.qnssl.com/2016012109301196.png">
   
     <link rel="alternative" href="/atom.xml" title="echo 午时已到" type="application/atom+xml">
@@ -41,7 +40,7 @@ Slab allocator：为了避免内存内碎片的问题，按照预先规定的大
   
 
 </head>
-
+</html>
 <body>
   <div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -158,7 +157,7 @@ Slab allocator：为了避免内存内碎片的问题，按照预先规定的大
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-memcache详解|与Redis对比" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-memcache详解|与Redis对比" class="article article-type-post " itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -195,7 +194,7 @@ Slab allocator：为了避免内存内碎片的问题，按照预先规定的大
 <h2 id="与Redis的对比"><a href="#与Redis的对比" class="headerlink" title="与Redis的对比"></a>与Redis的对比</h2><h3 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h3><p>Redis的数据类型比较比较多，有Hash，Set，List，zSet等，使用场景更加丰富，Memcached只有key-value类型。</p>
 <h3 id="事务性"><a href="#事务性" class="headerlink" title="事务性"></a>事务性</h3><p>Redis可以通过MULTI,EXEC等命令来支持事务，而memcached除了increment/decrement这样的原子操作命令，不存在对事务的支持。</p>
 <h3 id="数据持久化"><a href="#数据持久化" class="headerlink" title="数据持久化"></a>数据持久化</h3><p>memcached是不保证数据的有效性的，基于LRU的淘汰策略会使得部分数据丢失，，但是有许多基于memcached协议的项目实现了数据的持久化，例如memcache DB使用BerkeleyDB进行数据存储，但本质上它已经不是一个cache server，而只是一个兼容memcached的协议key-valueData Store了</p>
-<p>Redis自持主从，内建支持两种持久化方案，snapshot快照和AOF增量Log方式。快照顾名思义就是隔一段时间将完整的数据dump下来存储在文件中。AOF增量Log则是记录对数据的修改操作（实际上记录的就是每个对数据产生修改的命令本身），两种方案可以并存，也各有优缺点，具体参见<a href="http://redis.io/topics/persistence" target="_blank" rel="external">Redis Persistence</a></p>
+<p>Redis自持主从，内建支持两种持久化方案，snapshot快照和AOF增量Log方式。快照顾名思义就是隔一段时间将完整的数据dump下来存储在文件中。AOF增量Log则是记录对数据的修改操作（实际上记录的就是每个对数据产生修改的命令本身），两种方案可以并存，也各有优缺点，具体参见<a href="http://redis.io/topics/persistence" target="_blank" rel="noopener">Redis Persistence</a></p>
 <p>以上Redis的数据备份持久化方案等，如果不需要，为了提高性能，也完全可以Disable</p>
 <h3 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h3><p>Memcached自身并不主动定期检查和标记哪些数据需要被淘汰，只有当再次读取相关数据时才检查时间戳，或者当内存不够使用需要主动淘汰数据时进一步检查LRU数据。</p>
 <p>Redis为了减少大量小数据CMD操作的网络通讯时间开销 RTT (Round Trip Time)，支持pipeline和script技术。</p>
@@ -229,9 +228,9 @@ Slab allocator：为了避免内存内碎片的问题，按照预先规定的大
 </ul>
 <p>参考文章: </p>
 <ul>
-<li><a href="http://www.jianshu.com/p/e94fa7340923" target="_blank" rel="external">memcached Redis 对比分析</a></li>
-<li><a href="http://www.ywnds.com/?p=2999" target="_blank" rel="external">Memcached内存分配策略</a></li>
-<li><a href="https://www.oschina.net/code/snippet_1046345_44173#61852" target="_blank" rel="external">Memcache内存分配 | Memcache存储策略</a></li>
+<li><a href="http://www.jianshu.com/p/e94fa7340923" target="_blank" rel="noopener">memcached Redis 对比分析</a></li>
+<li><a href="http://www.ywnds.com/?p=2999" target="_blank" rel="noopener">Memcached内存分配策略</a></li>
+<li><a href="https://www.oschina.net/code/snippet_1046345_44173#61852" target="_blank" rel="noopener">Memcache内存分配 | Memcache存储策略</a></li>
 </ul>
 <!--http://www.ywnds.com/?p=2999
 
@@ -342,11 +341,11 @@ https://www.oschina.net/code/snippet_1046345_44173#61852-->
   
 <nav id="article-nav">
   
-    <a href="/VMware Fusion虚拟机配置固定IP/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/hello-world/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          VMware Fusion虚拟机配置固定IP
+          Hello World
         
       </div>
     </a>
@@ -385,7 +384,7 @@ https://www.oschina.net/code/snippet_1046345_44173#61852-->
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2017 贝壳丶吃枣药丸
+    		&copy; 2018 贝壳丶吃枣药丸
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -497,19 +496,19 @@ https://www.oschina.net/code/snippet_1046345_44173#61852-->
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">生活小记</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">贝壳</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">架构</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Feed</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">生活小记</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">贝壳</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -521,7 +520,7 @@ https://www.oschina.net/code/snippet_1046345_44173#61852-->
         </div>
         <ul class="search-ul">
           <p q-show="jsonFail" style="padding: 20px; font-size: 12px;">
-            缺失模块。<br/>1、在博客根目录（注意不是yilia根目录）执行以下命令：<br/> npm i hexo-generator-json-content --save<br/><br/>
+            缺失模块。<br>1、在博客根目录（注意不是yilia根目录）执行以下命令：<br> npm i hexo-generator-json-content --save<br><br>
             2、在根目录_config.yml里添加配置：
 <pre style="font-size: 12px;" q-show="jsonFail">
   jsonContent:

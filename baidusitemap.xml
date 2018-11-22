@@ -1,179 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
-
-    
   <url>
     <loc>http://yunxuan.site/VMware%20Fusion%E8%99%9A%E6%8B%9F%E6%9C%BA%E9%85%8D%E7%BD%AE%E5%9B%BA%E5%AE%9AIP/</loc>
     <lastmod>2017-05-04T08:17:43.000Z</lastmod>
-    <data>
-        <display>
-        <title>VMware Fusion虚拟机配置固定IP</title>
-        <pubTime>2017-03-05T08:48:28.000Z</pubTime>
-        
-        <tag>VMware</tag>
-         
-        <tag>Centos</tag>
-         
-        <tag>固定IP</tag>
-         
-         
-           
-             
-              <breadCrumb title="开发环境" url="http://yunxuan.site/categories/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
+  </url>  <url>
     <loc>http://yunxuan.site/memcache%E8%AF%A6%E8%A7%A3%7C%E4%B8%8ERedis%E5%AF%B9%E6%AF%94/</loc>
     <lastmod>2017-03-04T19:11:15.000Z</lastmod>
-    <data>
-        <display>
-        <title>Memcached详解|与Redis对比</title>
-        <pubTime>2017-01-06T06:39:56.000Z</pubTime>
-        
-        <tag>Memcached</tag>
-         
-        <tag>缓存</tag>
-         
-        <tag>Redis</tag>
-         
-         
-           
-             
-              <breadCrumb title="缓存" url="http://yunxuan.site/categories/%E7%BC%93%E5%AD%98/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
+  </url>  <url>
     <loc>http://yunxuan.site/hello-world/</loc>
     <lastmod>2017-01-08T16:08:19.000Z</lastmod>
-    <data>
-        <display>
-        <title>Hello World</title>
-        <pubTime>2016-09-07T04:52:14.000Z</pubTime>
-        
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
+  </url>  <url>
     <loc>http://yunxuan.site/%E6%96%B0%E5%85%B5%E8%AE%AD%E7%BB%83%E4%B9%8BFeed%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%EF%BC%88%E4%BA%8C%EF%BC%89/</loc>
     <lastmod>2016-11-21T10:26:52.000Z</lastmod>
-    <data>
-        <display>
-        <title>新兵训练之Feed架构设计（二）</title>
-        <pubTime>2016-10-03T10:05:51.000Z</pubTime>
-        
-        <tag>架构</tag>
-         
-        <tag>Feed</tag>
-         
-         
-           
-             
-              <breadCrumb title="Feed架构分享" url="http://yunxuan.site/categories/Feed%E6%9E%B6%E6%9E%84%E5%88%86%E4%BA%AB/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
+  </url>  <url>
     <loc>http://yunxuan.site/%E6%96%97%E5%BF%97%E6%B6%88%E7%A3%A8%E6%85%A2%E7%82%B9%E5%90%A7/</loc>
     <lastmod>2016-11-21T08:35:03.000Z</lastmod>
-    <data>
-        <display>
-        <title>斗志消磨慢点吧</title>
-        <pubTime>2016-11-21T08:26:04.000Z</pubTime>
-        
-        <tag>生活小记</tag>
-         
-        <tag>贝壳</tag>
-         
-         
-           
-             
-              <breadCrumb title="生活小记" url="http://yunxuan.site/categories/%E7%94%9F%E6%B4%BB%E5%B0%8F%E8%AE%B0/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
+  </url>  <url>
     <loc>http://yunxuan.site/%E6%96%B0%E5%85%B5%E8%AE%AD%E7%BB%83%E4%B9%8BFeed%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%EF%BC%88%E4%B8%80%EF%BC%89/</loc>
     <lastmod>2016-11-18T09:11:16.000Z</lastmod>
-    <data>
-        <display>
-        <title>新兵训练之Feed架构设计（一）</title>
-        <pubTime>2016-09-09T08:49:29.000Z</pubTime>
-        
-        <tag>架构</tag>
-         
-        <tag>Feed</tag>
-         
-         
-           
-             
-              <breadCrumb title="Feed架构分享" url="http://yunxuan.site/categories/Feed%E6%9E%B6%E6%9E%84%E5%88%86%E4%BA%AB/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
+  </url>  <url>
     <loc>http://yunxuan.site/%E7%A8%8B%E5%BA%8F%E7%8C%BF%E7%9A%84%E8%81%8C%E5%9C%BA%E7%BB%8F%E9%AA%8C%EF%BC%88%E4%B8%80%EF%BC%89/</loc>
     <lastmod>2016-09-25T15:45:26.000Z</lastmod>
-    <data>
-        <display>
-        <title>程序猿的职场经验（一）</title>
-        <pubTime>2016-09-09T05:52:16.000Z</pubTime>
-        
-        <tag>职场经验</tag>
-         
-         
-           
-             
-              <breadCrumb title="职场经验" url="http://yunxuan.site/categories/%E8%81%8C%E5%9C%BA%E7%BB%8F%E9%AA%8C/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
+  </url>  <url>
     <loc>http://yunxuan.site/%E4%BB%8E%E4%B8%80%E6%AC%A1%E8%B8%A9%E5%9D%91%E8%AF%B4%E8%B5%B7/</loc>
     <lastmod>2016-09-11T05:54:47.000Z</lastmod>
-    <data>
-        <display>
-        <title>从一次踩坑说起</title>
-        <pubTime>2016-09-08T05:54:04.000Z</pubTime>
-        
-        <tag>踩坑</tag>
-         
-        <tag>线上问题处理</tag>
-         
-         
-           
-             
-              <breadCrumb title="日常踩坑" url="http://yunxuan.site/categories/%E6%97%A5%E5%B8%B8%E8%B8%A9%E5%9D%91/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-    
-    
+  </url>
 </urlset>
