@@ -335,7 +335,7 @@
         repo: 'yunxuansite_comment',
         owner: 'yunxuanhao',
         admin: ['yunxuanhao'],
-        id: location.pathname,
+        id: (location.pathname).split("/").pop().substring(0, 49),
         distractionFreeMode: true
 
     });
