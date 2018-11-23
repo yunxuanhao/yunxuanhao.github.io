@@ -364,27 +364,31 @@ https://www.oschina.net/code/snippet_1046345_44173#61852-->
 
 
     
-      <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+      <!-- Gitalk 评论 start  -->
+<!-- Link Gitalk 的支持文件  -->
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk@latest/dist/gitalk.min.js"></script>
 
-<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
-
-<script type="text/javascript">
+<div id="gitalk-container"></div>
+    <script type="text/javascript">
     var gitalk = new Gitalk({
-      clientID: '{{ theme.gitalk.ClientID }}',
-      clientSecret: '{{ theme.gitalk.ClientSecret }}',
-      repo: '{{ theme.gitalk.repo }}',
-      owner: '{{ theme.gitalk.owner }}',
-      admin: ['{{ theme.gitalk.adminUser }}'],
-      id: {{ theme.gitalk.ID }},
-      labels: '{{ theme.gitalk.labels }}',
-      perPage: {{ theme.gitalk.perPage }},
-      pagerDirection: '{{ theme.gitalk.pagerDirection }}',
-      createIssueManually: {{ theme.gitalk.createIssueManually }},
-      distractionFreeMode: {{ theme.gitalk.distractionFreeMode }}
-    })
 
-  gitalk.render('gitalk-container')
+    // gitalk的主要参数
+        clientID: '7f5a6393e612374ce9d3',
+        clientSecret: '41fb5d22f92e81e2e73c5bf20f07de582e1c010e',
+        repo: 'yunxuansite_comment',
+        owner: 'yunxuanhao',
+        admin: ['yunxuanhao'],
+        id: location.pathname,
+        distractionFreeMode: true,
+        labels: gitalk,
+        perPage: 15,
+        createIssueManually: true,
+        distractionFreeMode: false,
+    });
+    gitalk.render('gitalk-container');
 </script>
+<!-- Gitalk end -->
 
     
 
