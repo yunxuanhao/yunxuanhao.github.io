@@ -303,28 +303,27 @@
 
 
     
-      <!-- Gitalk 评论 start  -->
-<!-- Link Gitalk 的支持文件  -->
-<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
-<script src="https://unpkg.com/gitalk@latest/dist/gitalk.min.js"></script>
+      <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
 
-<div id="gitalk-container"></div>
-    <script type="text/javascript">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<script type="text/javascript">
     var gitalk = new Gitalk({
+      clientID: '{{ theme.gitalk.ClientID }}',
+      clientSecret: '{{ theme.gitalk.ClientSecret }}',
+      repo: '{{ theme.gitalk.repo }}',
+      owner: '{{ theme.gitalk.owner }}',
+      admin: ['{{ theme.gitalk.adminUser }}'],
+      id: {{ theme.gitalk.ID }},
+      labels: '{{ theme.gitalk.labels }}',
+      perPage: {{ theme.gitalk.perPage }},
+      pagerDirection: '{{ theme.gitalk.pagerDirection }}',
+      createIssueManually: {{ theme.gitalk.createIssueManually }},
+      distractionFreeMode: {{ theme.gitalk.distractionFreeMode }}
+    })
 
-    // gitalk的主要参数
-        clientID: '7f5a6393e612374ce9d3',
-        clientSecret: '41fb5d22f92e81e2e73c5bf20f07de582e1c010e',
-        repo: 'yunxuansite_comment',
-        owner: 'yunxuanhao',
-        admin: ['yunxuanhao'],
-        id: (location.pathname).split("/").pop().substring(0, 49),
-        distractionFreeMode: true
-
-    });
-    gitalk.render('gitalk-container');
+  gitalk.render('gitalk-container')
 </script>
-<!-- Gitalk end -->
 
     
 
